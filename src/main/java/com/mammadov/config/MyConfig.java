@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.TransactionManager;
@@ -17,7 +18,7 @@ import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
-@RestController
+@Configuration
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan("com.mammadov")
@@ -26,19 +27,19 @@ public class MyConfig {
     public DataSource dataSource(){
         ComboPooledDataSource dataSource=new ComboPooledDataSource();
         try {
-            dataSource.setDriverClass("com.mysql.jdbs.cj.Driver");
-            dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/my_db?useSSL=false");
+            dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
+            dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/my_first_db?useSSL=false");
             dataSource.setUser("root");
-            dataSource.setPassword("12345");
+            dataSource.setPassword("Mamedov1759");
         } catch (PropertyVetoException e) {
             e.printStackTrace();
         }
         return dataSource;
     }
     @Bean
-    public LocalSessionFactoryBean sessionFactory(@Autowired DataSource dataSource){
+    public LocalSessionFactoryBean sessionFactory(){
         LocalSessionFactoryBean sessionFactory=new LocalSessionFactoryBean();
-        sessionFactory.setDataSource( dataSource);
+        sessionFactory.setDataSource( dataSource());
         sessionFactory.setPackagesToScan("com.mammadov.entity");
         Properties properties=new Properties();
         properties.setProperty("hibernate_dialect","org.hibernate.dialect.MySQLDialect");
@@ -47,9 +48,9 @@ public class MyConfig {
         return sessionFactory;
     }
     @Bean
-    public TransactionManager transactionManager(@Autowired SessionFactory sessionFactory){
+    public TransactionManager transactionManager(){
         HibernateTransactionManager transactionManager=new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory);
+        transactionManager.setSessionFactory(sessionFactory().getObject());
         return transactionManager;
     }
 }
