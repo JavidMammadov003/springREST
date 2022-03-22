@@ -22,13 +22,17 @@ public class ChildrenDaoImpl implements ChildrenDao{
     }
 
     @Override
-    public void deleteChild(Child child) {
+    public void deleteChild(int id) {
+    Session session=sessionFactory.getCurrentSession();
+
+    session.delete(session.get(Child.class,id));
 
     }
 
     @Override
     public void saveChild(Child child) {
-
+      Session session=sessionFactory.getCurrentSession();
+      session.saveOrUpdate(child);
     }
 
     @Override

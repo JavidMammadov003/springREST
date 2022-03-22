@@ -16,7 +16,7 @@ import java.util.List;
 public class Controller {
     @Autowired
     ChildrenService childrenService;
-    @GetMapping("/")
+    @GetMapping("")
     public List<Child> getChildren(){
 
         return childrenService.getChildren();
@@ -30,17 +30,25 @@ public class Controller {
             throw new NoSuchIdException("There is no such id");
        return childrenService.getChildById(id);
     }
-    @ExceptionHandler
-    public ResponseEntity<MyExceptionHandler> exceptionHandlerResponseEntity(NoSuchIdException exception){
-        MyExceptionHandler handler=new MyExceptionHandler();
-        handler.setMessage(exception.getMessage());
-        return new ResponseEntity<>(handler, HttpStatus.NOT_FOUND);
+    @PostMapping("")
+    public Child saveChild(@RequestBody Child child){
+        childrenService.saveChild(child);
+        return child;
     }
-    @ExceptionHandler
-    public ResponseEntity<MyExceptionHandler> exceptionHandlerResponseEntity(Exception exception){
-        MyExceptionHandler handler=new MyExceptionHandler();
-        handler.setMessage(exception.getMessage());
-        return new ResponseEntity<>(handler, HttpStatus.BAD_REQUEST);
+    @PutMapping("")
+    public Child updateChild(@RequestBody Child child){
+        int id=child.getId();
+        Child child1=childrenService.getChildById(id);
+        if(child1==null)
+            throw new NoSuchIdException("There is not id="+id);
+        childrenService.saveChild(child);
+        return child;
     }
+    @DeleteMapping("/{id}")
+    public String deleteChild(@PathVariable int id){
+        childrenService.deleteChild(id);
+        return "id= "+id+"deleted";
+    }
+
 
 }

@@ -23,4 +23,13 @@ public class ChildrenService {
     public Child getChildById(int id){
         return childrenDao.getChildById(id);
     }
+
+    @Transactional
+    public void saveChild(Child child){
+        childrenDao.saveChild(child);
+    }
+    @Transactional
+    public void deleteChild(int id){
+        childrenDao.deleteChild(id);
+    }
 }

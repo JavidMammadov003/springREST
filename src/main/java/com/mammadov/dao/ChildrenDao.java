@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ChildrenDao {
      List<Child> getChildren();
-     void deleteChild(Child child);
+     void deleteChild(int id);
      void saveChild(Child child);
      Child getChildById(int id);
 }
