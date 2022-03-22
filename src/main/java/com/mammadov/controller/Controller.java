@@ -34,7 +34,7 @@ public class Controller {
     public ResponseEntity<MyExceptionHandler> exceptionHandlerResponseEntity(NoSuchIdException exception){
         MyExceptionHandler handler=new MyExceptionHandler();
         handler.setMessage(exception.getMessage());
-        return new ResponseEntity<>(handler, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(handler, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler
     public ResponseEntity<MyExceptionHandler> exceptionHandlerResponseEntity(Exception exception){
